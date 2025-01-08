@@ -39,6 +39,15 @@ jobs:
       actions: read
       contents: read
 
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          # インストール.netのバージョンを指定(今回は.net6.0を指定) 
+          dotnet-version: 6.0.x
+      # プロジェクトで必要なライブラリなどをインストールする
+      - name: Restore dependencies
+        run: dotnet restore
+
     strategy:
       fail-fast: false
       matrix:
@@ -80,13 +89,7 @@ jobs:
     # 📚 See https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun
     - if: matrix.build-mode == 'manual'
       shell: bash
-      run: |
-        echo 'If you are using a "manual" build mode for one or more of the' \
-          'languages you are analyzing, replace this with the commands to build' \
-          'your code, for example:'
-        echo '  make bootstrap'
-        echo '  make release'
-        exit 1
+      run: dotnet build --no-restore /warnaserror
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
