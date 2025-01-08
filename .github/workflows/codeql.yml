@@ -39,14 +39,6 @@ jobs:
       actions: read
       contents: read
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v1
-        with:
-          # インストール.netのバージョンを指定(今回は.net6.0を指定) 
-          dotnet-version: 6.0.x
-      # プロジェクトで必要なライブラリなどをインストールする
-      - name: Restore dependencies
-        run: dotnet restore
 
     strategy:
       fail-fast: false
@@ -67,6 +59,15 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+
+    - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          # インストール.netのバージョンを指定(今回は.net6.0を指定) 
+          dotnet-version: 6.0.x
+      # プロジェクトで必要なライブラリなどをインストールする
+    - name: Restore dependencies
+      run: dotnet restore
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
